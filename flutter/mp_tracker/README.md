@@ -11,7 +11,7 @@ SDK 自身版本见 [VERSION](../../VERSION)，更新记录见 [CHANGELOG](../..
 dependencies:
   mp_tracker:
     git:
-      url: https://github.com/rayenergytech/mp-native-sdk.git
+      url: https://github.com/rayenergytech/rayenergy-mp-sdk.git
       path: flutter/mp_tracker
       ref: v1.5.11 # 选择已发布并验收的标签
 ```
