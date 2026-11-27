@@ -7,6 +7,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'core.dart';
 import 'flutter_tracker.dart';
 
+/// A decoded API response that did not complete the requested operation.
+class MpApiException extends StateError {
+  MpApiException(super.message, {required this.statusCode, this.code});
+
+  final int statusCode;
+  final int? code;
+}
+
 /// The old operation was not replayed. A fresh guest is ready for subsequent requests.
 class MpAccountDeletedRecovery implements Exception {
   MpAccountDeletedRecovery(this.configuration,this.epoch,this.sequence);
@@ -152,15 +160,27 @@ class MpClient {
     if(generation!=_epoch)throw StateError('Session changed; discarded response');
     final Object? decoded;
     try{decoded=jsonDecode(response.body);}catch(_){if(authenticated&&response.statusCode==401){_autoGuestEligible=false;await clearLocalSession();}rethrow;}
-    if(authenticated&&decoded is Map&&decoded['code']==40108){
+    final statusCode = response.statusCode;
+    final bodyMap = decoded is Map ? decoded : null;
+    final rawCode = bodyMap?['code'];
+    final code = rawCode is int ? rawCode : null;
+    if(authenticated&&code==40108){
       if(_deletedRecovery!=null&&_deletedRecoveryToken!=_token)throw StateError('Replacement session unavailable');
       final recovered=await _recoverDeletedSession();if(_closed||recovered['epoch']!=_epoch)throw StateError('Session changed; discarded recovery');
       throw MpAccountDeletedRecovery(Map<String,Object?>.from(recovered['configuration'] as Map),_epoch,recovered['sequence'] as int);
     }
-    if(authenticated&&response.statusCode==401){_autoGuestEligible=false;await clearLocalSession();throw StateError('Login expired');}
-    if(authenticated&&decoded is Map&&(decoded['code']==40101||decoded['code']==40302)){_autoGuestEligible=false;await clearLocalSession();throw StateError(decoded['message']?.toString()??'Login expired');}
-    if(response.statusCode<200 || response.statusCode>=300 || decoded is! Map || decoded['code']!=0 || decoded['data'] is! Map)throw StateError(decoded is Map?decoded['message']?.toString()??'Request failed':'Invalid response');
-    return Map<String,Object?>.from(decoded['data'] as Map);
+    if(authenticated&&(statusCode==401||code==40101||code==40302)){
+      _autoGuestEligible=false;
+      await clearLocalSession();
+      final message = statusCode==401 ? 'Login expired' : bodyMap?['message']?.toString()??'Login expired';
+      throw MpApiException(message,statusCode:statusCode,code:code);
+    }
+    final data = bodyMap?['data'];
+    if(statusCode<200 || statusCode>=300 || code!=0 || data is! Map){
+      final message = bodyMap==null ? 'Invalid response' : bodyMap['message']?.toString()??'Request failed';
+      throw MpApiException(message,statusCode:statusCode,code:code);
+    }
+    return Map<String,Object?>.from(data);
   }
   Future<JsonMap> loginGuest() {
     if(_guestLogin!=null)return _guestLogin!;

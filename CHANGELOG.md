@@ -1,5 +1,22 @@
 # SDK 更新记录
 
+## 2.0.0 (2026-11-27)
+
+- Flutter 公开 `MpApiException`，可从 `package:mp_tracker/mp_tracker.dart` 直接导入。异常继承 `StateError`，提供 HTTP `statusCode` 和可空的整数业务码 `code`。注销后的游客恢复继续通过 `MpAccountDeletedRecovery` 交付。
+- Flutter 将依赖对齐至新版插件组合。其他三端同步 SDK 发布版本，沿用各自的接入要求。
+
+### 重要：不兼容变更
+
+Flutter 2.0.0 需要 Flutter 3.47+ 和 Dart 3.11+。Flutter Android 宿主需支持 Android API 24+、Java 17+ 和 AGP 9 内置 Kotlin；显式关闭过内置 Kotlin 的项目须启用。Flutter iOS 宿主需满足新版插件的 iOS 13+／Xcode 26.1.1+ 要求。仍使用旧工具链的项目继续锁定已发布的 1.x 版本。
+
+升级顺序为先更新宿主工具链和部署目标，再固定 SDK 标签、刷新 `pubspec.lock` 并完整重建。上线前验证原安装上的会话和离线队列、Google 登录拒绝、注销恢复、两端原生构建及插件调用。Android 安全存储升级可能迁移本机密文，发布前用实机验证旧安装升级；回滚旧 SDK 时须单独验证旧版本能否读取已迁移的密文。中台接口和数据库无需迁移。
+
+## 1.5.13 (2026-11-27)
+
+- Flutter 提高兼容依赖版本下限：`http` 1.6.0、`crypto` 3.0.8、`package_info_plus` 8.3.1；`android_id` 更新到 0.4.1。宿主 Flutter 和 Dart 的最低版本继续为 3.29 和 3.7。
+- Android 独立发布使用 Gradle 8.14.5、Kotlin 1.9.25。单元测试的 JSON-java 更新到 20260814。
+- 四端 SDK 统一同步到 1.5.13；Web 无运行时依赖，iOS 使用原生框架。采集协议、会话及设备存储结构沿用原版。
+
 ## 1.5.12 (2026-11-27)
 
 - Web SDK 读取采集网关的单条拒绝明细。坏事件出队后，有效事件和后续批次继续上报。可设置 `onEventRejected` 接收原因。

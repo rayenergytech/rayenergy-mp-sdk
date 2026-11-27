@@ -1,21 +1,21 @@
 {
-  "version": "1.5.12",
-  "tag": "v1.5.12",
+  "version": "2.0.0",
+  "tag": "v2.0.0",
   "web": {
-    "url": "https://raw.githubusercontent.com/rayenergytech/rayenergy-mp-sdk/v1.5.12/npm/rayenergytech-mp-web-sdk-1.5.12.tgz",
-    "sha256": "c7b893e347f52f62822738f767ff606a98b2a9a06a02a1dab6ec442614cc25a1"
+    "url": "https://raw.githubusercontent.com/rayenergytech/rayenergy-mp-sdk/v2.0.0/npm/rayenergytech-mp-web-sdk-2.0.0.tgz",
+    "sha256": "77ed2a29c1657cca48d74c37530a2f46fca9d2bc6dc923c2cc02a202a0f57193"
   },
   "android": {
-    "repository": "https://raw.githubusercontent.com/rayenergytech/rayenergy-mp-sdk/v1.5.12/maven",
-    "coordinate": "com.rayenergytech:mp-tracker-android:1.5.12"
+    "repository": "https://raw.githubusercontent.com/rayenergytech/rayenergy-mp-sdk/v2.0.0/maven",
+    "coordinate": "com.rayenergytech:mp-tracker-android:2.0.0"
   },
   "ios": {
     "repository": "https://github.com/rayenergytech/rayenergy-mp-sdk.git",
-    "version": "1.5.12"
+    "version": "2.0.0"
   },
   "flutter": {
     "repository": "https://github.com/rayenergytech/rayenergy-mp-sdk.git",
     "path": "flutter/mp_tracker",
-    "ref": "v1.5.12"
+    "ref": "v2.0.0"
   }
 }

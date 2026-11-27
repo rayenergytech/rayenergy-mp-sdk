@@ -13,7 +13,7 @@ dependencies:
     git:
       url: https://github.com/rayenergytech/rayenergy-mp-sdk.git
       path: flutter/mp_tracker
-      ref: v1.5.11 # 选择已发布并验收的标签
+      ref: v2.0.0 # 待标签发布后使用
 ```
 
 ```dart
@@ -44,7 +44,7 @@ Future<void> main() async {
 
 ## 运行检查
 
-Flutter >=3.29 / Dart >=3.7，Android Java17、compileSdk >=34、AGP >=8.3、Gradle >=8.4；iOS >=12（最终要求以项目解析到的插件和工具链为准）。
+Flutter 3.47+、Dart 3.11+。Flutter Android 宿主需要 API 24+、Java 17+、AGP 9，并使用内置 Kotlin。若曾在 `gradle.properties` 设置 `android.builtInKotlin=false`，改为 `true` 或使用 AGP 9 默认值。Flutter iOS 宿主需要 iOS 13+ 和 Xcode 26.1.1+。仍使用旧工具链的项目可继续锁定已发布的 `v1.5.12`。 [android_id 构建要求](https://pub.dev/packages/android_id/versions/1.0.0#android-build-compatibility) · [device_info_plus 工具链要求](https://pub.dev/packages/device_info_plus/versions/13.3.0#requirements)
 
 ```sh
 flutter pub get
@@ -82,7 +82,9 @@ SDK 不自动收集广告标识、地理定位或账号归属国家；权限或�
 
 `loginGuest()` 成功和 `setSession(accessToken)` 会自动保存 Token。新建 MpClient 自动恢复同一作用域的 Token，使用 hasSession 判断后直接 refresh 获取服务端配置；不会缓存会员权益、用户资料或 AB 分组。作用域同时包含 API 地址、appCode、真实客户端和 deviceId，改变其中任一项不会复用旧登录。关闭自动初始化后，首次无 Token 的游客流程才手动调用 loginGuest；正式账号可使用 loginIdentity/loginPassword，游客升级使用 bindIdentity；外部直接登录后仍可 setSession。不要每次启动都无条件 loginGuest 覆盖正式会话。
 
-Web 使用同源 localStorage；Android 使用 AndroidKeyStore 保护的 AES-GCM 缓存（API21/22 采用 RSA 包装 AES 密钥）；iOS 使用安装作用域的 Keychain；Flutter 使用 flutter_secure_storage，原生端为平台安全存储，Web 需 HTTPS/localhost。Flutter 初始化后先 await client.ready 再读取 hasSession，setSession/clearLocalSession 返回 Future<void>，logout 返回游客配置 Future，均需 await。Flutter 应执行 flutter pub get，并按插件说明排除 Android 的安全存储备份恢复冲突，见 [flutter_secure_storage 9.2.4 文档](https://pub.dev/packages/flutter_secure_storage/versions/9.2.4)。
+Flutter 使用 `flutter_secure_storage 11.2.0+`，Flutter Web 需 HTTPS/localhost。初始化后先 `await client.ready` 再读取 `hasSession`。升级时用原安装验证安全存储迁移。 [安全存储文档](https://pub.dev/packages/flutter_secure_storage/versions/11.2.0)
+
+从 `package:mp_tracker/mp_tracker.dart` 导入 `MpApiException` 后，可读取 `statusCode` 和整数业务码 `code`。Google 登录挑战返回 40301 时保留当前游客会话。该异常仍可用 `on StateError` 捕获。超时、传输失败和无效 JSON 沿用各自的异常类型；注销结果待确认时先查询状态。40108 优先执行游客恢复，原操作不会自动重放。
 
 logout 请求服务端撤销当前正式会话并返回游客、保存新 Token 和重新获取配置；allDevices=true 撤销全部客户端会话。clearLocalSession 仅清本地缓存，不撤销服务端 Token。退出不注销账号、不取消商店订阅。HTTP401、业务40101，以及账号停用/合并40302 会清理本地会话并报错；普通40301、断网、超时和服务端500错误不清理。SDK 不自动把普通失效或封禁会话改为游客；明确注销状态 40108 按下文自动恢复。SDK 不自动延长 Token 的服务端有效期。close（Web/Flutter）仅释放实例，不删除已保存 Token；退出账号应显式 logout。
 
@@ -104,7 +106,7 @@ logout 请求服务端撤销当前正式会话并返回游客、保存新 Token 
 
 先升级中台再升级 SDK。Android 旧用户需在卸载前成功使用一次新版游客登录或配置刷新；已丢失的旧版随机 ID 无法找回。正式账号必须通过正式身份登录；设备标识不是正式身份凭据，关联冲突不自动合并。iOS 系统清理/设备抹除、Android 恢复出厂或签名/系统用户变化、浏览器清理网站数据等情形无法保证标识保留。
 
-Flutter 需要 `flutter pub get` 并完整重建（新增 android_id 0.4.0）；设备/Keychain 暂不可读会终止初始化并报错，解锁或恢复环境后重试。详见文档中心“SDK：下载、四端接入与返回读取”的设备标识章节。Android/iOS/Flutter 的新增测试仍需在对应工具链及真机完成验收。
+Flutter 更新依赖后执行 `flutter pub get` 并完整重建。设备标识或 Keychain 暂不可读时，初始化会终止并报错，解锁后可重试。
 
 ## 业务系统登录与续期
 
