@@ -1,5 +1,9 @@
 # SDK 更新记录
 
+## 2.1.0 (2026-11-27)
+
+- Web 新增可选 `webSessionProvider`，凭业务会话静默恢复同一普通游客。无凭据时签发独立正常游客。原有 Web 和其他端接入不自动启用。
+
 ## 2.0.0 (2026-11-27)
 
 - Flutter 公开 `MpApiException`，可从 `package:mp_tracker/mp_tracker.dart` 直接导入。异常继承 `StateError`，提供 HTTP `statusCode` 和可空的整数业务码 `code`。注销后的游客恢复继续通过 `MpAccountDeletedRecovery` 交付。

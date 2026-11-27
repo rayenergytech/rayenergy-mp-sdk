@@ -1,0 +1,110 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.rayenergytech",
+    "module": "mp-tracker-android",
+    "version": "2.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.5"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.25"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "mp-tracker-android-2.1.0.aar",
+          "url": "mp-tracker-android-2.1.0.aar",
+          "size": 131834,
+          "sha512": "0a5c04570f390c84235e576c2b96dcec19281dc300eecd987bea757a997f7c23826844b3244a971f7a2c2722c7dd522a2c82843e95bb076290f622164febe6d1",
+          "sha256": "bd5502aaaebeb83c1537adb6ef584a3ebf5aff633c15e157025d55f0a74a7ab8",
+          "sha1": "52eaf77d79fc88eea9d8e2915c3f8b49ea0da98e",
+          "md5": "56e349d899741799dc7054fd6f383593"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.android.installreferrer",
+          "module": "installreferrer",
+          "version": {
+            "requires": "2.2"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.13.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.25"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "mp-tracker-android-2.1.0.aar",
+          "url": "mp-tracker-android-2.1.0.aar",
+          "size": 131834,
+          "sha512": "0a5c04570f390c84235e576c2b96dcec19281dc300eecd987bea757a997f7c23826844b3244a971f7a2c2722c7dd522a2c82843e95bb076290f622164febe6d1",
+          "sha256": "bd5502aaaebeb83c1537adb6ef584a3ebf5aff633c15e157025d55f0a74a7ab8",
+          "sha1": "52eaf77d79fc88eea9d8e2915c3f8b49ea0da98e",
+          "md5": "56e349d899741799dc7054fd6f383593"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mp-tracker-android-2.1.0-sources.jar",
+          "url": "mp-tracker-android-2.1.0-sources.jar",
+          "size": 21517,
+          "sha512": "8544093a63dd9a1db7ca287276ab976333314480d52224eb81d3ad09e462207f3ea402ee346a5e8238b22569e54e67a65b6e7860e174082c230c2a0d710d5c7b",
+          "sha256": "5381cd8253e5fa5e47fa3005c6f7a94b31950c5a728e7b3ce76c8970384af642",
+          "sha1": "661c7d6e5648f77101a2166d828c6be7c3fa76b0",
+          "md5": "c57c1c903fa02cdc1ff703907ba9b4e2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 name: mp_tracker
 description: MP 中台 Flutter 埋点 SDK，适用于 iOS、Android 和 Web。
-version: 2.0.0
+version: 2.1.0
 publish_to: none
 environment:
   sdk: '>=3.11.0 <4.0.0'
